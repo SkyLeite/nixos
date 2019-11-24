@@ -19,6 +19,7 @@
     rofi
     xclip
     font-awesome_4
+    compton
   ];
 
   # Enable the KDE and i3 Desktop Environment.
