@@ -13,8 +13,12 @@
     mesa_drivers
     dunst
     mpd
+    mpd-mpris
+    playerctl
     firefox
     rofi
+    xclip
+    font-awesome_4
   ];
 
   # Enable the KDE and i3 Desktop Environment.
