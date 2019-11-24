@@ -27,6 +27,12 @@
       fsType = "ext4";
     };
 
+  fileSystems."/mnt/hdd" =
+    { device = "/dev/dist/by-uuid/BC30-106A";
+      fsType = "ntfs";
+      options = [ "uid=1001" "gid=100" "dmask=0007" "fmask=117" ];
+    };
+
   fileSystems."/boot" =
     { device = "/dev/disk/by-uuid/BC30-106A";
       fsType = "vfat";
