@@ -8,6 +8,7 @@
     vulkan-loader
     vulkan-validation-layers
     vulkan-tools
+    libstrangle
   ];
 
   # Enable OpenGL for 32 bit programs
