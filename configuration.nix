@@ -4,7 +4,11 @@
 
 { config, pkgs, ... }:
 
-{
+let antigen = builtins.fetchGit {
+      url = "https://github.com/zsh-users/antigen";
+      rev = "1359b9966689e5afb666c2c31f5ca177006ce710";
+    };
+in {
   imports =
     [ # Include the results of the hardware scan.
       ./hosts/pc-rodrigo.nix
@@ -45,7 +49,14 @@
   # started in user sessions.
   programs.mtr.enable = true;
   programs.gnupg.agent = { enable = true; enableSSHSupport = true; };
-  programs.zsh.enable = true;
+  programs.zsh = {
+    enable = true;
+    enableCompletion = true;
+    shellAliases = {
+      vim = "nvim";
+    };
+    interactiveShellInit = "source ${antigen}/antigen.zsh";
+  };
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.rodrigo = {
