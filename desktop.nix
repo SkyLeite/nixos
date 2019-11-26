@@ -3,7 +3,7 @@
 {
   environment.systemPackages = with pkgs; [
     i3-gaps
-    i3-easyfocus
+    wmfocus
     i3-layout-manager
     i3lock-fancy
     i3status-rust
