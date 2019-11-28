@@ -28,9 +28,8 @@
     };
 
   fileSystems."/mnt/hdd" =
-    { device = "/dev/disk/by-uuid/5BD12C6216128355";
-      fsType = "ntfs";
-      options = [ "uid=1001" "gid=100" "dmask=0007" "fmask=117" "umask=000" "rw" "user" "exec" "nofail" ];
+    { device = "/dev/disk/by-uuid/bd3e8ba9-32f3-4ad4-a9e4-d348f0759c8b";
+      fsType = "ext4";
     };
 
   fileSystems."/boot" =
