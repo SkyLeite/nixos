@@ -6,13 +6,22 @@
 
 {
   users.users.mpd.extraGroups = [ "audio" ];
+  
+  # Define a user account. Don't forget to set a password with ‘passwd’.
+  users.users.rodrigo = {
+    isNormalUser = true;
+    extraGroups = [ "wheel" "docker" "video" "mpd" "audio" ]; # Enable ‘sudo’ for the user.
+    shell = pkgs.zsh;
+    initialPassword = "1234";
+  };
 
   imports =
     [ # Include the results of the hardware scan.
       ./hosts/pc-rodrigo.nix
-      ./games.nix
+      # ./games.nix
       ./desktop.nix
       ./development.nix
+      ./home.nix
     ];
 
   # Use the systemd-boot EFI boot loader.
@@ -60,21 +69,8 @@
       theme = "frisk";
     };
   };
-  
-  # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.rodrigo = {
-    isNormalUser = true;
-    extraGroups = [ "wheel" "docker" "video" "mpd" "audio" ]; # Enable ‘sudo’ for the user.
-    shell = pkgs.zsh;
-  };
 
   users.users.root.openssh.authorizedKeys.keys = [ "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDJfH2SEdZyjHcewzSPbL8jHPsGMI6UfH9V4NqPN1ZPkvG18Yy0CT2JKR6N+75rtMJiQf1BAnTWaPfV6ngZ3WdXjdeBvz726HG4W/rQlydQxux0yDGzxKKbNzyKJzWkCy/btKDshix/w2jQrW538gfvB31EPLNfwHiTkJYMn3XdcElULA/frmel+GPFXRBZ7atygCQmw5hpDJ0gD4DKtXc66JzCo7O+PgdQY2SVeUE03ByQ+fANG4jCGizqahgX7JiubaSBXbD+l5fd+0I0V06+ACwB8zerHYe2zTeBtWnjEDOXhLNinJDxV7KntlKh/0hMAOws02fizrkgQmQ8lPpo00BJyaQnPMySYeTfL33rQdTbckAScRon2xiipxGT4uk5V0q7iy1WShDyhQYCp5WprRGTs4StaBVI/80FrDEmL9jirc9BO1RCj2XkNqqGEi5Ysnz8U3kdYKW2b/jBABAlf9Ksi1/pKZk3JWQSiaIOQH8XIxKP/YvFREoXVXYlOOM= rodrigo@home" ];
-
-  users.users.guest = {
-    isNormalUser = true;
-    extraGroups = [ "wheel" "mpd" ];
-    initialPassword = "1234";
-  };
 
   # This value determines the NixOS release with which your system is to be
   # compatible, in order to avoid breaking some software such as database
