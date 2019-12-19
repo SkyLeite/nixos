@@ -7,7 +7,7 @@ let
 
   dotfiles = builtins.fetchGit {
     url = "https://github.com/RodrigoLeiteF/dotfiles.git";
-    rev = "31d6d09f4573227c209c5f2ce32fb5ab869c78f8";
+    rev = "6392e457019657dcca77d42c4dd5ae8ad3d35a0d";
   };
 in
 {
@@ -39,6 +39,7 @@ in
         xdg.configFile."compton/compton.conf".source = "${dotfiles}/.config/compton/compton.conf";
         xdg.configFile."alacritty/alacritty.yml".source = "${dotfiles}/.config/alacritty/alacritty.yml";
         xdg.configFile."dunst/dunstrc".source = "${dotfiles}/.config/dunst/dunstrc";
+        xdg.configFile."emacs/init.el".source = "${dotfiles}/.config/emacs/init.el";
     };
 }
 
