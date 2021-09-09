@@ -2,7 +2,7 @@
 
 let mod = "Mod4";
 in {
-  imports = [ ./polybar ./i3.nix ];
+  imports = [ ./polybar ./i3.nix ./tmux.nix ];
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
@@ -23,6 +23,7 @@ in {
     pkgs.mono6
     pkgs.simplescreenrecorder
     pkgs.steam
+    pkgs.steam-tui
     pkgs.arandr
     pkgs.gimp-with-plugins
     pkgs.picom
@@ -32,6 +33,22 @@ in {
     pkgs.rofi
     pkgs.libnotify
     pkgs.yadm
+    pkgs.clojure
+    pkgs.clojure-lsp
+    pkgs.clj-kondo
+    pkgs.leiningen
+    pkgs.boot
+    pkgs.sbcl
+    pkgs.lispPackages.quicklisp
+    pkgs.tdrop
+
+    pkgs.mpd
+    pkgs.mopidy
+    pkgs.mopidy-mpd
+    pkgs.mopidy-youtube
+
+    pkgs.htop
+    pkgs.tty-clock
   ];
 
   programs.git = {
@@ -57,6 +74,39 @@ in {
       export PATH
       eval "$(direnv hook zsh)"
     '';
+    shellAliases = { sysyadm = "sudo yadm -Y /etc/yadm"; };
+  };
+
+  programs.fzf = {
+    enable = true;
+    enableZshIntegration = true;
+  };
+
+  programs.exa = {
+    enable = true;
+    enableAliases = true;
+  };
+
+  programs.ncmpcpp = {
+    enable = true;
+    bindings = [
+      {
+        key = "j";
+        command = "scroll_down";
+      }
+      {
+        key = "k";
+        command = "scroll_up";
+      }
+      {
+        key = "J";
+        command = [ "select_item" "scroll_down" ];
+      }
+      {
+        key = "K";
+        command = [ "select_item" "scroll_up" ];
+      }
+    ];
   };
 
   services.random-background = {

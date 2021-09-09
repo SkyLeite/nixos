@@ -29,9 +29,7 @@
   networking = {
     useDHCP = false;
     interfaces.eno1.useDHCP = true;
-    hosts = {
-      "0.0.0.0" = [ "www.facebook.com" "facebook.com" "twitter.com" ];
-    };
+    hosts = { };
     nameservers = [ "8.8.8.8" "8.8.4.4" ];
   };
 
@@ -54,6 +52,7 @@
     desktopManager = {
       xterm.enable = false;
       xfce.enable = true;
+      gnome.enable = true;
     };
     windowManager.i3 = {
       enable = true;
@@ -62,6 +61,7 @@
     videoDrivers = [ "amdgpu" ];
   };
 
+  services.blueman.enable = true;
   services.k3s.enable = false;
 
   # Configure keymap in X11
@@ -75,6 +75,8 @@
   # Enable sound.
   sound.enable = true;
   hardware.pulseaudio.enable = true;
+
+  hardware.bluetooth.enable = true;
 
   hardware.opengl.enable = true;
   hardware.opengl.driSupport = true;
@@ -131,6 +133,7 @@
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   programs.mtr.enable = true;
+  programs.steam.enable = true;
   # programs.gnupg.agent = {
   #   enable = true;
   #   enableSSHSupport = true;
@@ -143,6 +146,26 @@
   services.openssh.enable = true;
   services.openssh.passwordAuthentication = true;
   virtualisation.docker.enable = true;
+
+  services.mopidy = {
+    enable = true;
+    extensionPackages = [
+      pkgs.mopidy-mpd
+      pkgs.mopidy-scrobbler
+      pkgs.mopidy-mpris
+      pkgs.mopidy-local
+      pkgs.mopidy-youtube
+      pkgs.mopidy-spotify
+    ];
+    configuration = ''
+      [mpd]
+      enabled = true
+
+      [youtube]
+      enabled = true
+    '';
+    extraConfigFiles = [ "/etc/nixos/mopidy/mopidy.conf" ];
+  };
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];

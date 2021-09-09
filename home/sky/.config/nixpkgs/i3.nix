@@ -11,7 +11,7 @@ in {
       terminal = "alacritty";
       fonts = {
         names = [ "DejaVu Sans Mono, FontAwesome 6" ];
-        style = " Bold Semi-Condensed";
+        style = "Bold Semi-Condensed";
         size = 9.0;
       };
 
@@ -30,7 +30,8 @@ in {
       keybindings = lib.mkOptionDefault {
         "${mod}+d" = "exec ${pkgs.albert}/bin/albert toggle";
         "${mod}+o" = "exit";
-        "${mod}+t" = "exec yakuake";
+        "${mod}+t" =
+          "exec tdrop -am -w 80% -h 45% -x 10% alacritty --class AlacrittyFloating";
 
         "${mod}+h" = "focus left";
         "${mod}+Shift+h" = "move left";
@@ -40,6 +41,9 @@ in {
         "${mod}+Shift+k" = "move up";
         "${mod}+l" = "focus right";
         "${mod}+Shift+l" = "move right";
+
+        "${mod}+v" = "split vertical";
+        "${mod}+b" = "split horizontal";
 
         "${mod}+Print" = "exec flameshot full -c";
         "Print" = "exec flameshot gui";
@@ -69,6 +73,10 @@ in {
         { command = "albert"; }
         { command = "flameshot"; }
         { command = "yakuake"; }
+        {
+          command = "sh ../nixpkgs/screens.sh";
+          always = true;
+        }
       ];
 
       window.commands = [
@@ -85,6 +93,11 @@ in {
         {
           command = "floating enable";
           criteria = { class = "Blueman-manager"; };
+        }
+
+        {
+          command = "floating enable";
+          criteria = { instance = "AlacrittyFloating"; };
         }
       ];
     };
