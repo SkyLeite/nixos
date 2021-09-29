@@ -6,10 +6,10 @@
 {
   imports = [ (modulesPath + "/installer/scan/not-detected.nix") ];
 
+
   boot.initrd.availableKernelModules =
     [ "xhci_pci" "ahci" "usb_storage" "usbhid" "sd_mod" ];
   boot.initrd.kernelModules = [ ];
-  boot.kernelParams = [ "radeon.si_support=0" "amdgpu.si_support=1" ];
   boot.kernelModules = [
     "kvm-amd"
     "amdgpu"
@@ -19,6 +19,8 @@
     # "vfio"
   ];
   boot.extraModulePackages = [ ];
+
+  services.xserver.videoDrivers = ["amdgpu"];
 
   fileSystems."/" = {
     device = "/dev/disk/by-uuid/5dac99e1-1850-4b49-8154-0739a1f22716";

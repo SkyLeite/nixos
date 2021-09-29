@@ -2,7 +2,7 @@
 
 let mod = "Mod4";
 in {
-  imports = [ ./polybar ./i3.nix ./tmux.nix ];
+  imports = [ ./polybar ./i3.nix ./tmux.nix ./neovim.nix ];
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
@@ -13,6 +13,9 @@ in {
     pkgs.nodejs-slim-12_x
     pkgs.python3
     pkgs.ruby
+    pkgs.rubocop
+    pkgs.rubyPackages.rubocop-performance
+    pkgs.rake
     pkgs.elixir
     pkgs.elixir_ls
     pkgs.yarn
@@ -22,13 +25,10 @@ in {
     pkgs.dotnet-sdk_5
     pkgs.mono6
     pkgs.simplescreenrecorder
-    pkgs.steam
-    pkgs.steam-tui
     pkgs.arandr
     pkgs.gimp-with-plugins
     pkgs.picom
     pkgs.virt-manager
-    pkgs.rufo
     pkgs.xorg.xmodmap
     pkgs.rofi
     pkgs.libnotify
@@ -41,6 +41,8 @@ in {
     pkgs.sbcl
     pkgs.lispPackages.quicklisp
     pkgs.tdrop
+    pkgs.libreoffice
+    pkgs.inotify-tools
 
     pkgs.mpd
     pkgs.mopidy
@@ -49,6 +51,8 @@ in {
 
     pkgs.htop
     pkgs.tty-clock
+
+    pkgs.nerdfonts
   ];
 
   programs.git = {
@@ -58,6 +62,45 @@ in {
   };
 
   programs.emacs = { enable = true; };
+
+  programs.alacritty = {
+    enable = true;
+    settings = {
+      background_opacity = 0.99;
+      font = {
+        normal = { family = "Source Code Pro"; style = "Regular"; };
+        bold = { family = "Source Code Pro"; style = "Bold"; };
+        italic = { family = "Source Code Pro"; style = "Italic"; };
+        bold_italic = { family = "Source Code Pro"; style = "Bold Italic"; };
+      };
+#       colors = {
+#         primary = {
+#           background = "0xf1f1f1";
+#           foreground = "0x424242";
+#         };
+#         normal = {
+#           black = "0x212121";
+#           red = "0xc30771";
+#           green = "0x10a778";
+#           yellow = "0xa89c14";
+#           blue = "0x008ec4";
+#           magenta = "0x523c79";
+#           cyan = "0x20a5ba";
+#           white = "0xe0e0e0";
+#         };
+#         bright = {
+#           black = "0x212121";
+#           red = "0xfb007a";
+#           green = "0x5fd7af";
+#           yellow = "0xf3e430";
+#           blue = "0x20bbfc";
+#           magenta = "0x6855de";
+#           cyan = "0x4fb8cc";
+#           white = "0xf1f1f1";
+#         };
+#       };
+    };
+  };
 
   programs.zsh = {
     enable = true;

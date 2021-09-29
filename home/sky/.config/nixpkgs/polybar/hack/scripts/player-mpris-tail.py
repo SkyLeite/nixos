@@ -1,5 +1,5 @@
 #!/run/current-system/sw/bin/nix-shell
-#!nix-shell -i python3 -p python3 python38Packages.dbus-python python38Packages.pygobject3
+#!nix-shell -i python3 -p python38 python38Packages.dbus-python python38Packages.pygobject3
 
 import sys
 import dbus

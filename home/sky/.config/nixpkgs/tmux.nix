@@ -11,6 +11,8 @@
       set -g base-index 1
       setw -g pane-base-index 1
 
+      set-option -sg escape-time 1
+
       unbind '"'
       unbind %
       unbind s

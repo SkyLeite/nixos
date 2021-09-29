@@ -25,6 +25,7 @@
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
 (setq doom-theme 'doom-one)
+(setq-default enable-local-variables t)
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
@@ -55,7 +56,7 @@
 
 (setq display-line-numbers-type 'relative)
 ;; (setq doom-font (font-spec :family "APL385 Unicode" :size 14 :weight 'light))
-(setq doom-theme 'doom-opera-light)
+;; (setq doom-theme 'doom-opera-light)
 
 ;; Custom bindings
 (map!
@@ -71,7 +72,7 @@
 (setq exec-path (append exec-path '("~/.nvm/versions/node/v10.15.3/bin")))
 
 (after! company
-  (setq company-idle-delay 0.4 company-minimum-prefix-length 3))
+  (setq company-idle-delay 0.3 company-minimum-prefix-length 3))
 
 (after! ox
   (require 'ox-hugo))
@@ -103,7 +104,7 @@
 
 ;; (set-face-attribute 'default nil :height 130)
 (add-to-list 'exec-path "/home/rodrigo/.npm/bin")
-(add-to-list 'exec-path "/usr/lib/elixir-ls")
+;; (add-to-list 'exec-path "/usr/bin/elixir-ls")
 
 ;; Haskell
 (setq lsp-haskell-process-path-hie "hie-wrapper")
@@ -118,6 +119,7 @@
 
 (setq-hook! 'js-mode-hook +format-with-lsp nil)
 (setq-hook! 'typescript-tsx-mode-hook +format-with-lsp nil)
+;; (setq-hook! 'ruby-mode-hook format-all-formatters '(("Ruby" rubocop)))
 
 ;; (add-hook! clojure-mode
 ;;            (add-hook 'before-save-hook 'elisp-format-buffer)
@@ -134,26 +136,26 @@
 
 (map! "C-<escape>" #'company-complete)
 
-    ;; Add buffer local Flycheck checkers after LSP for different major modes.
-    (defvar-local my-flycheck-local-cache nil)
-    (defun my-flycheck-local-checker-get (fn checker property)
-      ;; Only check the buffer local cache for the LSP checker, otherwise we get
-      ;; infinite loops.
-      (if (eq checker 'lsp)
-          (or (alist-get property my-flycheck-local-cache)
-              (funcall fn checker property))
-        (funcall fn checker property)))
-    (advice-add 'flycheck-checker-get
-                :around 'my-flycheck-local-checker-get)
-    (add-hook 'lsp-managed-mode-hook
-              (lambda ()
-                (when (derived-mode-p 'js-mode)
-                  (setq my-flycheck-local-cache '((next-checkers . (javascript-eslint)))))))
-    (add-hook 'lsp-managed-mode-hook
-              (lambda ()
-                (when (derived-mode-p 'typescript-mode)
-                  (setq my-flycheck-local-cache '((next-checkers . (javascript-eslint)))))))
-    (add-hook 'lsp-managed-mode-hook
-              (lambda ()
-                (when (derived-mode-p 'typescript-tsx-mode)
-                  (setq my-flycheck-local-cache '((next-checkers . (javascript-eslint)))))))
+;; Add buffer local Flycheck checkers after LSP for different major modes.
+;; (defvar-local my-flycheck-local-cache nil)
+;; (defun my-flycheck-local-checker-get (fn checker property)
+;; ;; Only check the buffer local cache for the LSP checker, otherwise we get
+;; ;; infinite loops.
+;; (if (eq checker 'lsp)
+;;         (or (alist-get property my-flycheck-local-cache)
+;;         (funcall fn checker property))
+;; (funcall fn checker property)))
+;; (advice-add 'flycheck-checker-get
+;;         :around 'my-flycheck-local-checker-get)
+;; (add-hook 'lsp-managed-mode-hook
+;;         (lambda ()
+;;         (when (derived-mode-p 'js-mode)
+;;                 (setq my-flycheck-local-cache '((next-checkers . (javascript-eslint)))))))
+;; (add-hook 'lsp-managed-mode-hook
+;;         (lambda ()
+;;         (when (derived-mode-p 'typescript-mode)
+;;                 (setq my-flycheck-local-cache '((next-checkers . (javascript-eslint)))))))
+;; (add-hook 'lsp-managed-mode-hook
+;;         (lambda ()
+;;         (when (derived-mode-p 'typescript-tsx-mode)
+;;                 (setq my-flycheck-local-cache '((next-checkers . (javascript-eslint)))))))

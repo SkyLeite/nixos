@@ -6,6 +6,12 @@
 
 {
   nixpkgs.config.allowUnfree = true;
+  nixpkgs.config.allowBroken = true;
+  nixpkgs.config.packageOverrides = pkgs: {
+    steam = pkgs.steam.override {
+      extraPkgs = pkgs: with pkgs; [ pango libthai harfbuzz ];
+    };
+  };
 
   imports = [ # Include the results of the hardware scan.
     ./hardware-configuration.nix
@@ -61,6 +67,7 @@
     videoDrivers = [ "amdgpu" ];
   };
 
+  services.flatpak.enable = true;
   services.blueman.enable = true;
   services.k3s.enable = false;
 
@@ -172,6 +179,9 @@
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
+
+  networking.firewall.enable = false;
+  # networking.firewall.allowedTCPPorts = [ 22 80 8080 8000 11470 ];
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
