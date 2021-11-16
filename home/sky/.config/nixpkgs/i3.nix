@@ -72,7 +72,6 @@ in {
         }
         { command = "albert"; }
         { command = "flameshot"; }
-        { command = "yakuake"; }
         {
           command = "sh ../nixpkgs/screens.sh";
           always = true;
@@ -98,6 +97,11 @@ in {
         {
           command = "floating enable";
           criteria = { instance = "AlacrittyFloating"; };
+        }
+
+        {
+          command = "floating enable";
+          criteria = { instance = "origin.exe"; };
         }
       ];
     };

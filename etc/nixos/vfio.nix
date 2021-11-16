@@ -9,7 +9,7 @@
       [ "vendor-reset" "vfio_virqfd" "vfio_pci" "vfio_iommu_type1" "vfio" ];
     #extraModprobeConfig = "options vfio-pci ids=1002:731f,1002:ab38";
     extraModulePackages =
-      [ pkgs.linuxPackages.vendor-reset pkgs.linuxPackages.cpupower ];
+      [ config.boot.kernelPackages.vendor-reset config.boot.kernelPackages.cpupower ];
   };
 
   programs.dconf.enable = true;

@@ -9,7 +9,9 @@
 
   boot.initrd.availableKernelModules =
     [ "xhci_pci" "ahci" "usb_storage" "usbhid" "sd_mod" ];
+  boot.kernel.sysctl = { "vm.swappiness" = 0; };
   boot.initrd.kernelModules = [ ];
+  boot.kernelPackages = pkgs.linuxPackages_zen;
   boot.kernelModules = [
     "kvm-amd"
     "amdgpu"

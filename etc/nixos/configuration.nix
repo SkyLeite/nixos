@@ -4,6 +4,14 @@
 
 { config, pkgs, ... }:
 
+let
+  usBr = pkgs.fetchFromGitHub {
+    owner = "SkyLeite";
+    repo = "us-br";
+    rev = "e00b23128f668d621266904f7040998bab5c6168";
+    sha256 = "1az5aqhm2hmsa2a43qr5k6djnc51sqr6zl2g21zf1kjv3n57nf2i";
+  };
+in
 {
   nixpkgs.config.allowUnfree = true;
   nixpkgs.config.allowBroken = true;
@@ -54,7 +62,10 @@
   services.xserver = {
     enable = true;
     autorun = true;
-    displayManager = { sddm.enable = true; };
+    displayManager = { 
+      sddm.enable = true; 
+      sessionCommands = "${pkgs.xorg.xmodmap}/bin/xmodmap ${usBr}/us-br";
+    };
     desktopManager = {
       xterm.enable = false;
       xfce.enable = true;
@@ -91,13 +102,16 @@
 
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
+  services.udev.extraRules = ''
+  SUBSYSTEM=="usb", ATTRS{idVendor}=="057e", ATTRS{idProduct}=="3006", TAG+="uaccess"
+  '';
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.sky = {
     isNormalUser = true;
     createHome = true;
     description = "Sky Leite";
-    extraGroups = [ "wheel" "docker" "libvirtd" "kvm" "input" ];
+    extraGroups = [ "wheel" "docker" "libvirtd" "kvm" "input" "adbusers" ];
     group = "users";
     home = "/home/sky";
     hashedPassword =
@@ -131,16 +145,17 @@
     python3
     ripgrep
     teams
-    unityhub
-    yakuake
     wget
     xclip
+    virtualbox
+    xorg.xkbcomp
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   programs.mtr.enable = true;
   programs.steam.enable = true;
+  programs.adb.enable = true;
   # programs.gnupg.agent = {
   #   enable = true;
   #   enableSSHSupport = true;
@@ -153,6 +168,9 @@
   services.openssh.enable = true;
   services.openssh.passwordAuthentication = true;
   virtualisation.docker.enable = true;
+  virtualisation.virtualbox.host.enable = true;
+
+  users.extraGroups.vboxusers.members = [ "sky" ];
 
   services.mopidy = {
     enable = true;
@@ -173,6 +191,15 @@
     '';
     extraConfigFiles = [ "/etc/nixos/mopidy/mopidy.conf" ];
   };
+
+  # Binary Cache for Haskell.nix
+  nix.binaryCachePublicKeys = [
+    "hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ="
+  ];
+
+  nix.binaryCaches = [
+    "https://hydra.iohk.io"
+  ];
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];

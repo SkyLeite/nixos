@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, nixos, lib, ... }:
 let
   material-nvim = pkgs.vimUtils.buildVimPlugin {
     name = "material-nvim";
@@ -23,17 +23,6 @@ let
     # buildInputs = [ pkgs.yarn pkgs.nodejs ];
     # configurePhase = "${pkgs.yarn}/bin/yarn install --offline";
     # buildPhase = "${pkgs.yarn}/bin/yarn prepack";
-  };
-
-  tmuxline = pkgs.vimUtils.buildVimPlugin {
-    name = "tmuxline";
-    src = pkgs.fetchFromGitHub {
-      owner = "edkolev";
-      repo = "tmuxline.vim";
-      rev = "4119c553923212cc67f4e135e6f946dc3ec0a4d6";
-      sha256 = "0gs2jghs1a9sp09mlphcpa1rzlmxmsvyaa7y20w6qsbczz989vm3";
-      fetchSubmodules = true;
-    };
   };
 in {
   programs.neovim = {
@@ -65,6 +54,19 @@ in {
             rootPatterns = [ "elm.json" ];
             "trace.server" = "verbose";
           };
+
+          haskell = {
+            command = "haskell-language-server-wrapper";
+            args = [ "--lsp" ];
+            rootPatterns = [
+              ".stack.yaml"
+              ".hie-bios"
+              "BUILD.bazel"
+              "cabal.config"
+              "package.yaml"
+            ];
+            filetypes = [ "hs" "lhs" "haskell" ];
+          };
         };
 
         "coc.preferences.codeLens.enable" = true;
@@ -83,7 +85,6 @@ in {
 
       vim-nix
       vim-devicons
-      vim-airline
       vim-dispatch-neovim
       vim-commentary
       vim-bbye
@@ -91,6 +92,9 @@ in {
       vim-vue
       vim-elm-syntax
       vim-easymotion
+      vim-fsharp
+      kotlin-vim
+      haskell-vim
 
       coc-nvim
       coc-solargraph
@@ -118,7 +122,6 @@ in {
       neoformat
       surround
       neogit
-      tmuxline
       quick-scope
     ];
 
@@ -150,6 +153,7 @@ in {
       nmap <Leader>cd <Plug>(coc-definition)
       nmap <Leader>cD <Plug>(coc-type-definition)
       nmap <Leader>cr <Plug>(coc-references)
+      nmap <Leader>cR <Plug>(coc-rename)
       nmap <Leader>ci <Plug>(coc-implementation)
 
       nmap <Leader>gg <CMD>Neogit<CR>
@@ -197,6 +201,12 @@ in {
       set timeoutlen=500
     '';
 
-    extraPackages = [ pkgs.ag pkgs.universal-ctags pkgs.fd pkgs.elixir_ls ];
+    extraPackages = [
+      pkgs.ag
+      pkgs.universal-ctags
+      pkgs.fd
+      pkgs.elixir_ls
+      #pkgs.dotnetPackages.FSharpAutoComplete
+    ];
   };
 }
