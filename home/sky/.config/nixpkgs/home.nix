@@ -2,13 +2,14 @@
 
 let mod = "Mod4";
 in {
-  imports = [ ./polybar ./i3.nix ./tmux.nix ./neovim.nix ];
+  imports = [ ./polybar ./i3.nix ./tmux.nix ./neovim.nix ./scripts/gui.nix ];
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
 
   nixpkgs.config.allowUnfree = true;
 
+  home.keyboard = false;
   home.packages = [
     pkgs.nodejs-slim-12_x
     pkgs.python3
@@ -22,15 +23,12 @@ in {
     pkgs.dunst
     pkgs.playerctl
     pkgs.bundix
-    pkgs.dotnet-sdk_5
-    pkgs.mono6
     pkgs.simplescreenrecorder
     pkgs.arandr
     pkgs.gimp-with-plugins
     pkgs.picom
     pkgs.virt-manager
     pkgs.xorg.xmodmap
-    pkgs.rofi
     pkgs.libnotify
     pkgs.yadm
     pkgs.clojure
@@ -44,28 +42,18 @@ in {
     pkgs.libreoffice
     pkgs.inotify-tools
 
-    pkgs.mpd
-    pkgs.mopidy
-    pkgs.mopidy-mpd
-    pkgs.mopidy-youtube
-
     pkgs.htop
     pkgs.tty-clock
 
-    pkgs.nerdfonts
-    pkgs.genymotion
-    pkgs.virtualbox
+    # pkgs.nerdfonts
     pkgs.ytmdesktop
     pkgs.lutris
     pkgs.niv
     pkgs.multimc
     pkgs.discord-canary
-    pkgs.adoptopenjdk-jre-hotspot-bin-8
-    pkgs.jetbrains.idea-community
+    pkgs.jre8
+    pkgs.jdk8
   ];
-
-  services.xserver.displayManager.sessionCommands =
-    "${pkgs.xorg.xmodmap}/bin/xmodmap ${usBr}/us-br";
 
   programs.git = {
     enable = true;
@@ -96,6 +84,13 @@ in {
         bold_italic = {
           family = "Source Code Pro";
           style = "Bold Italic";
+        };
+      };
+      window = {
+        dynamic_padding = true;
+        padding = {
+          x = 15;
+          y = 10;
         };
       };
       #       colors = {
@@ -181,6 +176,20 @@ in {
     enableAliases = true;
   };
 
+  programs.rofi = {
+    enable = true;
+    package = pkgs.rofi.override { plugins = [ pkgs.rofi-emoji ]; };
+    theme = "Arc-Dark";
+    extraConfig = {
+      modi = "emoji,drun,ssh";
+      kb-primary-paste = "Control+V,Shift+Insert";
+      kb-secondary-paste = "Control+v,Insert";
+      padding = 18;
+      width = 60;
+      font = "Noto Sans 12";
+    };
+  };
+
   programs.ncmpcpp = {
     enable = true;
     bindings = [
@@ -213,7 +222,12 @@ in {
 
   services.unclutter = { enable = true; };
 
-  services.picom = { enable = true; };
+  services.picom = {
+    enable = true;
+    shadow = true;
+    shadowOffsets = [ (-12) (-12) ];
+    vSync = true;
+  };
 
   services.dunst = {
     enable = true;
@@ -252,7 +266,6 @@ in {
 
   programs.direnv.enable = true;
   programs.direnv.nix-direnv.enable = true;
-  programs.direnv.nix-direnv.enableFlakes = true;
 
   # This value determines the Home Manager release that your
   # configuration is compatible with. This helps avoid breakage

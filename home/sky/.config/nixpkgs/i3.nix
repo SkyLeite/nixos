@@ -28,7 +28,9 @@ in {
       gaps = { inner = 12; };
 
       keybindings = lib.mkOptionDefault {
-        "${mod}+d" = "exec ${pkgs.albert}/bin/albert toggle";
+        # "${mod}+d" = "exec ${pkgs.albert}/bin/albert toggle";
+        "${mod}+d" = "exec rofi -show drun -columns 3 -sidebar-mode";
+        "${mod}+e" = "exec rofi -show emoji";
         "${mod}+o" = "exit";
         "${mod}+t" =
           "exec tdrop -am -w 80% -h 45% -x 10% alacritty --class AlacrittyFloating";
@@ -70,7 +72,6 @@ in {
           always = true;
           notification = false;
         }
-        { command = "albert"; }
         { command = "flameshot"; }
         {
           command = "sh ../nixpkgs/screens.sh";

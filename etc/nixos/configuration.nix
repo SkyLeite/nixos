@@ -111,7 +111,7 @@ in
     isNormalUser = true;
     createHome = true;
     description = "Sky Leite";
-    extraGroups = [ "wheel" "docker" "libvirtd" "kvm" "input" "adbusers" ];
+    extraGroups = [ "wheel" "docker" "libvirtd" "kvm" "input" "adbusers" "audio" ];
     group = "users";
     home = "/home/sky";
     hashedPassword =
@@ -200,6 +200,10 @@ in
   nix.binaryCaches = [
     "https://hydra.iohk.io"
   ];
+
+  nix.extraOptions = ''
+	  experimental-features = nix-command flakes
+	  '';
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];

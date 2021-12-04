@@ -35,6 +35,12 @@
       bind -n M-j select-pane -D
       bind -n M-k select-pane -U
       bind -n M-l select-pane -R
+
+      # Copy and paste 
+      bind P paste-buffer
+      bind-key -T copy-mode-vi v send-keys -X begin-selection
+      bind-key -T copy-mode-vi y send-keys -X copy-selection
+      bind-key -T copy-mode-vi r send-keys -X rectangle-toggle
     '';
   };
 }

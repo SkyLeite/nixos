@@ -126,9 +126,6 @@ in {
     ];
 
     extraConfig = ''
-      let g:material_style = 'darker'
-      colorscheme material
-
       let mapleader="\<Space>"
 
       nmap <Escape>
@@ -199,6 +196,19 @@ in {
       set nu
       set rnu
       set timeoutlen=500
+
+      "" Use terminal background
+      function! MyHighlights() abort
+          highlight Normal ctermbg=none guibg=none
+      endfunction
+
+      augroup MyColors
+          autocmd!
+          autocmd ColorScheme * call MyHighlights()
+      augroup END
+
+      let g:material_style = 'darker'
+      colorscheme material
     '';
 
     extraPackages = [
@@ -206,7 +216,7 @@ in {
       pkgs.universal-ctags
       pkgs.fd
       pkgs.elixir_ls
-      #pkgs.dotnetPackages.FSharpAutoComplete
+      pkgs.dotnetPackages.FSharpAutoComplete
     ];
   };
 }
