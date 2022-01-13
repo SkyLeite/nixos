@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 let
   usBr = pkgs.fetchFromGitHub {
@@ -171,6 +171,12 @@ in
   virtualisation.virtualbox.host.enable = true;
 
   users.extraGroups.vboxusers.members = [ "sky" ];
+
+  # services.xserver.config = lib.mkAfter ''
+  # Section "Extensions"
+  #   Option "MIT-SHM" "Disable"
+  # EndSection
+  # '';
 
   services.mopidy = {
     enable = true;

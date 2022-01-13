@@ -72,7 +72,7 @@
 (setq exec-path (append exec-path '("~/.nvm/versions/node/v10.15.3/bin")))
 
 (after! company
-  (setq company-idle-delay 0.3 company-minimum-prefix-length 3))
+  (setq company-idle-delay 1 company-minimum-prefix-length 3))
 
 (after! ox
   (require 'ox-hugo))

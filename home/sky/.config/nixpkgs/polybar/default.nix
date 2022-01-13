@@ -1,6 +1,6 @@
 { config, pkgs, ... }: {
   services.polybar = {
-    enable = false;
+    enable = true;
     script = "SHELL=$(which sh) polybar top & SHELL=$(which sh) polybar top2 &";
     package = pkgs.polybar.override {
       i3Support = true;

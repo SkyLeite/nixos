@@ -53,7 +53,11 @@ in {
     pkgs.discord-canary
     pkgs.jre8
     pkgs.jdk8
+    pkgs.mpv
+    pkgs.deluge
   ];
+
+  home.sessionVariables = { EDITOR = "nvim"; };
 
   programs.git = {
     enable = true;
@@ -166,6 +170,11 @@ in {
     shellAliases = { sysyadm = "sudo yadm -Y /etc/yadm"; };
   };
 
+  programs.autojump = {
+    enable = true;
+    enableZshIntegration = true;
+  };
+
   programs.fzf = {
     enable = true;
     enableZshIntegration = true;
@@ -174,6 +183,36 @@ in {
   programs.exa = {
     enable = true;
     enableAliases = true;
+  };
+
+  programs.autorandr = {
+    enable = true;
+    profiles = {
+      "home" = {
+        fingerprint = {
+          DisplayPort-1 = "<EDID>";
+          DisplayPort-0 = "<EDID>";
+        };
+        config = {
+          DisplayPort-2 = {
+            enable = true;
+            position = "0x0";
+            mode = "1920x1080";
+            rate = "143.98";
+          };
+          DisplayPort-1 = {
+            enable = true;
+            primary = true;
+            position = "1920x0";
+            mode = "1920x1080";
+            rate = "143.98";
+          };
+        };
+      };
+    };
+    hooks = {
+      postswitch = { "notify-i3" = "${pkgs.i3}/bin/i3-msg restart"; };
+    };
   };
 
   programs.rofi = {
@@ -226,7 +265,7 @@ in {
     enable = true;
     shadow = true;
     shadowOffsets = [ (-12) (-12) ];
-    vSync = true;
+    vSync = false;
   };
 
   services.dunst = {
@@ -252,6 +291,8 @@ in {
         frame_color = "#8e24aa";
         corner_radius = 2;
         icon_position = "left";
+        show_indicators = true;
+        indicate_hidden = false;
       };
 
       urgency_normal = { background = "#141C21"; };

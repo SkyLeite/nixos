@@ -216,7 +216,7 @@ in {
       pkgs.universal-ctags
       pkgs.fd
       pkgs.elixir_ls
-      pkgs.dotnetPackages.FSharpAutoComplete
+      #pkgs.dotnetPackages.FSharpAutoComplete
     ];
   };
 }

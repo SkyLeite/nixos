@@ -10,19 +10,21 @@
   boot.initrd.availableKernelModules =
     [ "xhci_pci" "ahci" "usb_storage" "usbhid" "sd_mod" ];
   boot.kernel.sysctl = { "vm.swappiness" = 0; };
+  boot.supportedFilesystems = [ "ntfs" "exfat" ];
   boot.initrd.kernelModules = [ ];
   boot.kernelPackages = pkgs.linuxPackages_zen;
-  boot.kernelModules = [
-    "kvm-amd"
-    "amdgpu"
+  boot.kernelParams = [ "boot.shell_on_fail" ];
+  # boot.kernelModules = [
+    #"kvm-amd"
+    #"amdgpu"
     # "vfio_virqfd"
     # "vfio_pci"
     # "vfio_iommu_type1"
     # "vfio"
-  ];
+  #];
   boot.extraModulePackages = [ ];
 
-  services.xserver.videoDrivers = ["amdgpu"];
+  # services.xserver.videoDrivers = ["amdgpu"];
 
   fileSystems."/" = {
     device = "/dev/disk/by-uuid/5dac99e1-1850-4b49-8154-0739a1f22716";
