@@ -1,6 +1,10 @@
 { config, pkgs, lib, ... }:
 
-let mod = "Mod4";
+let
+  mod = "Mod4";
+  my-nur = import /mnt/hdd/projects/nix-repository { };
+
+  lol-launchhelper = my-nur.lol-launchhelper;
 in {
   imports = [ ./polybar ./i3.nix ./tmux.nix ./neovim.nix ./scripts/gui.nix ];
 
@@ -14,9 +18,7 @@ in {
     pkgs.nodejs-slim-12_x
     pkgs.python3
     pkgs.ruby
-    pkgs.rubocop
-    pkgs.rubyPackages.rubocop-performance
-    pkgs.rake
+    #pkgs.rake
     pkgs.elixir
     pkgs.elixir_ls
     pkgs.yarn
@@ -49,12 +51,20 @@ in {
     pkgs.ytmdesktop
     pkgs.lutris
     pkgs.niv
-    pkgs.multimc
+    pkgs.polymc
     pkgs.discord-canary
     pkgs.jre8
     pkgs.jdk8
     pkgs.mpv
     pkgs.deluge
+    pkgs.brasero
+    pkgs.sqls
+    #pkgs.haskell-language-server
+    #pkgs.ghc
+    pkgs.gnome.zenity
+    pkgs.remmina
+
+    #lol-launchhelper
   ];
 
   home.sessionVariables = { EDITOR = "nvim"; };
@@ -71,7 +81,6 @@ in {
   programs.alacritty = {
     enable = true;
     settings = {
-      background_opacity = 0.99;
       font = {
         normal = {
           family = "Source Code Pro";
@@ -92,6 +101,7 @@ in {
       };
       window = {
         dynamic_padding = true;
+        opacity = 0.95;
         padding = {
           x = 15;
           y = 10;

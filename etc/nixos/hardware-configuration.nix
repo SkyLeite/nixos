@@ -22,7 +22,7 @@
     # "vfio_iommu_type1"
     # "vfio"
   #];
-  boot.extraModulePackages = [ ];
+  boot.extraModulePackages = with config.boot.kernelPackages; [ xpadneo ];
 
   # services.xserver.videoDrivers = ["amdgpu"];
 

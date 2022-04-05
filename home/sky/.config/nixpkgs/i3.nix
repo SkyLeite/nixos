@@ -4,8 +4,7 @@ in {
   xsession.windowManager.i3 = {
     enable = true;
     package = pkgs.i3-gaps;
-    config = {
-      modifier = mod;
+    config = { modifier = mod;
       bars = [ ];
 
       terminal = "alacritty";
@@ -30,10 +29,13 @@ in {
       keybindings = lib.mkOptionDefault {
         # "${mod}+d" = "exec ${pkgs.albert}/bin/albert toggle";
         "${mod}+d" = "exec rofi -show drun -columns 3 -sidebar-mode";
-        "${mod}+e" = "exec rofi -show emoji";
+        "${mod}+s" = "exec rofi -show emoji";
         "${mod}+o" = "exit";
-        "${mod}+t" =
+        "${mod}+g" =
           "exec tdrop -am -w 80% -h 45% -x 10% alacritty --class AlacrittyFloating";
+
+        "${mod}+Shift+f" = "kill";
+        "${mod}+Shift+y" = "reload";
 
         "${mod}+h" = "focus left";
         "${mod}+Shift+h" = "move left";
@@ -43,6 +45,23 @@ in {
         "${mod}+Shift+k" = "move up";
         "${mod}+l" = "focus right";
         "${mod}+Shift+l" = "move right";
+
+        "${mod}+1" = "workspace 1";
+        "${mod}+2" = "workspace 2";
+        "${mod}+3" = "workspace 3";
+        "${mod}+4" = "workspace 4";
+        "${mod}+5" = "workspace 5";
+
+        "${mod}+q" = "workspace Q";
+        "${mod}+Shift+q" = "move workspace Q";
+        "${mod}+w" = "workspace W";
+        "${mod}+Shift+w" = "move workspace W";
+        "${mod}+e" = "workspace E";
+        "${mod}+Shift+e" = "move workspace E";
+        "${mod}+r" = "workspace R";
+        "${mod}+Shift+r" = "move workspace R";
+        "${mod}+t" = "workspace T";
+        "${mod}+Shift+t" = "move workspace T";
 
         "${mod}+v" = "split vertical";
         "${mod}+b" = "split horizontal";
@@ -65,6 +84,20 @@ in {
         "XF86AudioPrev" = "exec playerctl previous";
         "XF86AudioNext" = "exec playerctl next";
       };
+
+      workspaceOutputAssign = [
+        { workspace="1"; output = "DisplayPort-0"; }
+        { workspace="2"; output = "DisplayPort-0"; }
+        { workspace="3"; output = "DisplayPort-0"; }
+        { workspace="4"; output = "DisplayPort-0"; }
+        { workspace="5"; output = "DisplayPort-0"; }
+
+        { workspace="Q"; output = "DisplayPort-1"; }
+        { workspace="W"; output = "DisplayPort-1"; }
+        { workspace="E"; output = "DisplayPort-1"; }
+        { workspace="R"; output = "DisplayPort-1"; }
+        { workspace="T"; output = "DisplayPort-1"; }
+      ];
 
       startup = [
         {
@@ -105,6 +138,6 @@ in {
           criteria = { instance = "origin.exe"; };
         }
       ];
-    };
+ };
   };
 }

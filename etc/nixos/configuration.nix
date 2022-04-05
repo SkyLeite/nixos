@@ -19,6 +19,9 @@ in
     steam = pkgs.steam.override {
       extraPkgs = pkgs: with pkgs; [ pango libthai harfbuzz ];
     };
+    nur = import (builtins.fetchTarball "https://github.com/nix-community/NUR/archive/master.tar.gz") {
+      inherit pkgs;
+    };
   };
 
   imports = [ # Include the results of the hardware scan.
@@ -78,6 +81,44 @@ in
     videoDrivers = [ "amdgpu" ];
   };
 
+  services.samba = {
+    enable = true;
+    securityType = "user";
+    openFirewall = true;
+    extraConfig = ''
+      [global]
+      
+      max protocol = NT1
+      min protocol = CORE
+      ntlm auth = yes
+      keepalive = 0
+      smb ports = 445
+    '';
+    shares = {
+      public = {
+        path = "/mnt/hdd/Console Games";
+        browseable = "yes";
+        "read only" = "no";
+        "guest ok" = "yes";
+        "create mask" = "0644";
+        "directory mask" = "0755";
+      };
+
+      PS2SMB = {
+        comment = "PS2 SMB";
+        path = "/mnt/hdd/Console Games/PS2";
+        browseable = "yes";
+	"public" = "yes";
+	"available" = "yes";
+        "read only" = "no";
+        "guest ok" = "yes";
+        "create mask" = "0644";
+        "directory mask" = "0755";
+      };
+    };
+  };
+
+
   services.flatpak.enable = true;
   services.blueman.enable = true;
   services.k3s.enable = false;
@@ -92,7 +133,43 @@ in
 
   # Enable sound.
   sound.enable = true;
-  hardware.pulseaudio.enable = true;
+  hardware.pulseaudio.enable = false;
+  security.rtkit.enable = true;
+  services.pipewire = {
+    enable = true;
+    alsa.enable = true;
+    alsa.support32Bit = true;
+    pulse.enable = true;
+    # If you want to use JACK applications, uncomment this
+    jack.enable = true;
+    media-session.config.bluez-monitor.rules = [
+    {
+      # Matches all cards
+      matches = [ { "device.name" = "~bluez_card.*"; } ];
+      actions = {
+        "update-props" = {
+          "bluez5.reconnect-profiles" = [ "hfp_hf" "hsp_hs" "a2dp_sink" ];
+          # mSBC is not expected to work on all headset + adapter combinations.
+          "bluez5.msbc-support" = true;
+          # SBC-XQ is not expected to work on all headset + adapter combinations.
+          "bluez5.sbc-xq-support" = true;
+        };
+      };
+    }
+    {
+      matches = [
+        # Matches all sources
+        { "node.name" = "~bluez_input.*"; }
+        # Matches all outputs
+        { "node.name" = "~bluez_output.*"; }
+      ];
+      actions = {
+        "node.pause-on-idle" = false;
+      };
+    }
+  ];
+  };
+  programs.noisetorch.enable = true;
 
   hardware.bluetooth.enable = true;
 
@@ -149,6 +226,8 @@ in
     xclip
     virtualbox
     xorg.xkbcomp
+    pavucontrol
+    ncpamixer
   ];
 
   # Some programs need SUID wrappers, can be configured further or are

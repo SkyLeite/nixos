@@ -212,7 +212,7 @@ in {
     '';
 
     extraPackages = [
-      pkgs.ag
+      pkgs.silver-searcher
       pkgs.universal-ctags
       pkgs.fd
       pkgs.elixir_ls
