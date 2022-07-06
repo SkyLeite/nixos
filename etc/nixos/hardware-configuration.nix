@@ -6,23 +6,44 @@
 {
   imports = [ (modulesPath + "/installer/scan/not-detected.nix") ];
 
-
   boot.initrd.availableKernelModules =
     [ "xhci_pci" "ahci" "usb_storage" "usbhid" "sd_mod" ];
   boot.kernel.sysctl = { "vm.swappiness" = 0; };
   boot.supportedFilesystems = [ "ntfs" "exfat" ];
-  boot.initrd.kernelModules = [ ];
   boot.kernelPackages = pkgs.linuxPackages_zen;
-  boot.kernelParams = [ "boot.shell_on_fail" ];
-  # boot.kernelModules = [
-    #"kvm-amd"
-    #"amdgpu"
-    # "vfio_virqfd"
-    # "vfio_pci"
-    # "vfio_iommu_type1"
-    # "vfio"
-  #];
+  boot.kernelParams = [
+    "boot.shell_on_fail"
+    "pci=noats"
+    "pcie_acs_override=downstream,multifunction"
+  ];
+  boot.kernelModules = [
+  # "kvm-amd"
+  # "amdgpu"
+  # "vfio_virqfd"
+  # "vfio_pci"
+  # "vfio_iommu_type1"
+  # "vfio"
+    "uvcvideo"
+  ];
+
+  boot.extraModprobeConfig = ''
+    options uvcvideo quirks=4
+  '';
+
   boot.extraModulePackages = with config.boot.kernelPackages; [ xpadneo ];
+
+  # nixpkgs.config.packageOverrides = pkgs: {
+  #   linuxPackages_zen = pkgs.linuxPackages_zen.override {
+  #     kernelPatches = pkgs.linuxPackages_zen.kernelPatches ++ [
+  #       { name = "acs";
+  #         patch = pkgs.fetchurl {
+  #           url = "https://aur.archlinux.org/cgit/aur.git/plain/add-acs-overrides.patch?h=linux-vfio";
+  #           sha256 = "5517df72ddb44f873670c75d89544461473274b2636e2299de93eb829510ea50";
+  #         };
+  #       }
+  #     ];
+  #   };
+  # };
 
   # services.xserver.videoDrivers = ["amdgpu"];
 

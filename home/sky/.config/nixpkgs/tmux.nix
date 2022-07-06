@@ -10,6 +10,7 @@
       set -g mouse on
       set -g base-index 1
       setw -g pane-base-index 1
+      setw -g mode-keys vi
 
       set-option -sg escape-time 1
 

@@ -4,9 +4,21 @@ let
   mod = "Mod4";
   my-nur = import /mnt/hdd/projects/nix-repository { };
 
+  nur = import (builtins.fetchTarball
+    "https://github.com/nix-community/NUR/archive/master.tar.gz") {
+      inherit pkgs;
+    };
+
   lol-launchhelper = my-nur.lol-launchhelper;
 in {
-  imports = [ ./polybar ./i3.nix ./tmux.nix ./neovim.nix ./scripts/gui.nix ];
+  imports = [
+    ./polybar
+    ./i3.nix
+    ./tmux.nix
+    ./neovim.nix
+    ./scripts/gui.nix
+    ./packages/deadd.nix
+  ];
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
@@ -17,14 +29,11 @@ in {
   home.packages = [
     pkgs.nodejs-slim-12_x
     pkgs.python3
-    pkgs.ruby
     #pkgs.rake
     pkgs.elixir
     pkgs.elixir_ls
     pkgs.yarn
-    pkgs.dunst
     pkgs.playerctl
-    pkgs.bundix
     pkgs.simplescreenrecorder
     pkgs.arandr
     pkgs.gimp-with-plugins
@@ -63,6 +72,14 @@ in {
     #pkgs.ghc
     pkgs.gnome.zenity
     pkgs.remmina
+    pkgs.pamixer
+    pkgs.barrier
+    pkgs.obs-studio
+    my-nur.ncpamixer-git
+    pkgs.dbeaver
+    pkgs.strawberry
+    pkgs.vscode-with-extensions
+    pkgs.sonic-pi
 
     #lol-launchhelper
   ];
@@ -76,7 +93,18 @@ in {
     extraConfig = { init = { defaultBranch = "main"; }; };
   };
 
-  programs.emacs = { enable = true; };
+  programs.emacs = {
+    enable = true;
+    package = pkgs.emacs28NativeComp.overrideAttrs (old: {
+      src = pkgs.fetchFromGitHub {
+        owner = "emacs-mirror";
+        repo = "emacs";
+        rev = "41a2def162ee95db6a9ca7e904bbd7feee5e3ccf";
+        sha256 = "sha256-lgUMld1iBaBPcOWkmZcmMTWz3wPpcwE91hN/3slZN/E=";
+      };
+    });
+  };
+  #programs.firefox.enable = true;
 
   programs.alacritty = {
     enable = true;
@@ -270,16 +298,20 @@ in {
   };
 
   services.unclutter = { enable = true; };
+  services.lorri = { enable = true; };
 
   services.picom = {
     enable = true;
     shadow = true;
     shadowOffsets = [ (-12) (-12) ];
     vSync = false;
+    fade = true;
+    fadeDelta = 2;
+    refreshRate = 144;
   };
 
   services.dunst = {
-    enable = true;
+    enable = false;
 
     settings = {
       global = {

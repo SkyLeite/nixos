@@ -27,6 +27,7 @@ in
   imports = [ # Include the results of the hardware scan.
     ./hardware-configuration.nix
     ./vfio.nix
+    ./nix-alien.nix
   ];
 
   # Use the systemd-boot EFI boot loader.
@@ -170,7 +171,7 @@ in
   ];
   };
   programs.noisetorch.enable = true;
-
+  programs.nix-ld.enable = true;
   hardware.bluetooth.enable = true;
 
   hardware.opengl.enable = true;
@@ -201,12 +202,10 @@ in
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     alacritty
-    albert
     bitwarden
     discord
     docker
     docker-compose
-    dolphin
     editorconfig-core-c
     emacs
     fd
@@ -241,6 +240,7 @@ in
   # };
 
   # List services that you want to enable:
+  services.lorri.enable = false;
 
   # Enable the OpenSSH daemon.
   services.sshd.enable = true;
